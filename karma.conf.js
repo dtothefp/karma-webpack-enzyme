@@ -20,15 +20,7 @@ module.exports = function(config) {
     preprocessors: {
       'test.config.js': ['webpack', 'sourcemap']
     },
-    reporters: ['mocha'],
-    plugins: [
-      require('karma-webpack'),
-      require('karma-mocha'),
-      require('karma-sinon'),
-      require('karma-mocha-reporter'),
-      require('karma-chrome-launcher'),
-      require('karma-sourcemap-loader')
-    ],
+    reporters: ['spec'],
     webpack: {
       devtool: 'inline-source-map',
       module: {
@@ -44,11 +36,16 @@ module.exports = function(config) {
           },
           {
             test: /\.json$/,
-            loader: 'json-loader'
+            loader: 'json'
           }
         ]
       },
       externals: {
+        'jsdom': 'window',
+        'cheerio': 'window',
+        'react/lib/ExecutionEnvironment': true,
+        'react/addons': true,
+        'react/lib/ReactContext': 'window',
         'sinon': 'window.sinon'
       },
       resolve: {
@@ -67,7 +64,8 @@ module.exports = function(config) {
           __DEVELOPMENT__: true,
           __DEVTOOLS__: false,
           'process.env': {
-            TEST_FILE: TEST_FILE && JSON.stringify(TEST_FILE)
+            TEST_FILE: JSON.stringify(TEST_FILE || ''),
+            NODE_ENV: JSON.stringify('development')
           }
         }),
         new webpack.ProvidePlugin({
