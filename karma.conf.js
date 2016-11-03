@@ -20,19 +20,11 @@ module.exports = function(config) {
     preprocessors: {
       'test.config.js': ['webpack', 'sourcemap']
     },
-    reporters: ['mocha'],
-    plugins: [
-      require('karma-webpack'),
-      require('karma-mocha'),
-      require('karma-sinon'),
-      require('karma-mocha-reporter'),
-      require('karma-chrome-launcher'),
-      require('karma-sourcemap-loader')
-    ],
+    reporters: ['spec'],
     webpack: {
       devtool: 'inline-source-map',
       module: {
-        rules: [
+        loaders: [
           { test: /\.jsx?$/,
             exclude: /node_modules/,
             loader: 'babel',
@@ -44,19 +36,24 @@ module.exports = function(config) {
           },
           {
             test: /\.json$/,
-            loader: 'json-loader'
+            loader: 'json'
           }
         ]
       },
       externals: {
+        'jsdom': 'window',
+        'cheerio': 'window',
+        'react/lib/ExecutionEnvironment': true,
+        'react/addons': true,
+        'react/lib/ReactContext': 'window',
         'sinon': 'window.sinon'
       },
       resolve: {
-        modules: [
+        modulesDirectories: [
           'src',
           'node_modules'
         ],
-        extensions: ['.json', '.js']
+        extensions: ['', '.json', '.js']
       },
       plugins: [
         new webpack.IgnorePlugin(/\.json$/),
