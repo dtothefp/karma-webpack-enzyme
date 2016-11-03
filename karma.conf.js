@@ -64,7 +64,8 @@ module.exports = function(config) {
           __DEVELOPMENT__: true,
           __DEVTOOLS__: false,
           'process.env': {
-            TEST_FILE: TEST_FILE && JSON.stringify(TEST_FILE)
+            TEST_FILE: JSON.stringify(TEST_FILE || ''),
+            NODE_ENV: JSON.stringify('development')
           }
         }),
         new webpack.ProvidePlugin({
